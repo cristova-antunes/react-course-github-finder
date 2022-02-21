@@ -1,9 +1,12 @@
 import { useState, useContext } from "react";
 import GithubContext from "../../context/github/GithubContext";
+import AlertContext, { ALERT_TYPE } from "../../context/alert/AlertContext";
 
 export default function UserSearch() {
   const [text, setText] = useState("");
   const { users, searchUsers, clearUsers } = useContext(GithubContext);
+
+  const { setAlert } = useContext(AlertContext);
 
   function handleChange(e) {
     setText(e.target.value);
@@ -13,7 +16,7 @@ export default function UserSearch() {
     e.preventDefault();
 
     if (text === "") {
-      alert("Please fill the field");
+      setAlert("Please fill the field", ALERT_TYPE.error);
     } else {
       searchUsers(text);
       setText("");
