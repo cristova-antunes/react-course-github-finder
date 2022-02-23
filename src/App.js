@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 //Context
 import { GithubProvier } from "./context/github/GithubContext";
 import { AlertProvider } from "./context/alert/AlertContext";
@@ -11,6 +12,7 @@ import Alert from "./components/layout/Alert";
 //Pages
 import Home from "./pages/Home";
 import About from "./pages/About";
+import User from "./pages/User";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -26,6 +28,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/user/:login" element={<User />} />
                 <Route path="/*" element={<NotFound />} />
               </Routes>
             </main>
