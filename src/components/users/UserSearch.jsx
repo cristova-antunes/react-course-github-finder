@@ -1,10 +1,12 @@
 import { useState, useContext } from "react";
+import { GITHUB_REDUCER_ACTIONS } from "../../context/github/GithubReducer";
 import GithubContext from "../../context/github/GithubContext";
+import { searchUsers } from "../../context/github/GithubActions";
 import AlertContext, { ALERT_TYPE } from "../../context/alert/AlertContext";
 
 export default function UserSearch() {
   const [text, setText] = useState("");
-  const { users, searchUsers, clearUsers } = useContext(GithubContext);
+  const { users, dispatch } = useContext(GithubContext);
 
   const { setAlert } = useContext(AlertContext);
 
@@ -12,19 +14,30 @@ export default function UserSearch() {
     setText(e.target.value);
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (text === "") {
       setAlert("Please fill the field", ALERT_TYPE.error);
     } else {
-      searchUsers(text);
+      dispatch({
+        type: GITHUB_REDUCER_ACTIONS.SET_LOADING,
+      });
+
+      const users = await searchUsers(text);
+
+      dispatch({
+        type: GITHUB_REDUCER_ACTIONS.GET_USERS,
+        payload: users,
+      });
       setText("");
     }
   }
 
   function handleClearBtn() {
-    clearUsers();
+    dispatch({
+      type: GITHUB_REDUCER_ACTIONS.CLEAR_USERS,
+    });
   }
 
   return (
